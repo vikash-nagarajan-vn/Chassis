@@ -1,0 +1,47 @@
+{% extends "board_base.html" %}
+{% block heading %}Calendar{% endblock %}
+{% block content %}
+<div class="wrap-wide">
+  <div class="page-head"><div><div class="eyebrow">Build season</div><h1>Calendar</h1><div class="sub">Set your competition date and the days your team can work. Anyone on the team can update this.</div></div></div>
+
+  <div class="panel" style="margin-top:0">
+    <h3>Competition date</h3>
+    <form hx-post="{{ base }}/calendar/competition-date" hx-target="#compdate-result" hx-swap="innerHTML"
+          style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input type="date" name="competition_date" value="{{ board.calendar.competition_date or '' }}" style="max-width:200px;margin:0">
+      <button type="submit" class="btn btn-primary btn-sm">Save date</button>
+      <span id="compdate-result" class="hint">{% if board.calendar.competition_date %}<span class="ok">Set to {{ board.calendar.competition_date }}.</span>{% endif %}</span>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="cal-head">
+      <a class="btn btn-ghost btn-sm" href="{{ base }}/calendar?month={{ prev_ym }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+      </a>
+      <span class="label">{{ month_label }}</span>
+      <a class="btn btn-ghost btn-sm" href="{{ base }}/calendar?month={{ next_ym }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+      </a>
+    </div>
+
+    <div class="quick">
+      <form hx-post="{{ base }}/calendar/quick" hx-target="#cal-grid" hx-swap="outerHTML" style="display:contents">
+        <input type="hidden" name="year" value="{{ year }}"><input type="hidden" name="month" value="{{ month }}">
+        <button class="btn btn-outline btn-sm" name="action" value="all">Select all days</button>
+        <button class="btn btn-outline btn-sm" name="action" value="weekends">Select weekends</button>
+        <button class="btn btn-outline btn-sm" name="action" value="none">Unselect all</button>
+      </form>
+    </div>
+
+    {% include "partials/cal_grid.html" %}
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)">
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--rail-tint);border:1px solid var(--rail)"></span> Work day</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--solved)"></span> Competition</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;box-shadow:inset 0 0 0 1px var(--rail)"></span> Today</span>
+      <span>Tip: click any day to set the meeting time and location.</span>
+    </div>
+  </div>
+</div>
+{% endblock %}

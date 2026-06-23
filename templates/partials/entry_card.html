@@ -1,0 +1,28 @@
+{% set valid_ids = e.tag_ids | select('in', tag_map) | list %}
+{% set first_tag = tag_map[valid_ids[0]] if valid_ids else None %}
+<article class="entry-card">
+  <div class="rail" style="background: {{ first_tag.color if first_tag else 'var(--hairline)' }}"></div>
+  <div class="body">
+    <div style="display:flex;align-items:flex-start;gap:10px;justify-content:space-between">
+      <h3>
+        {% if e.pinned %}<svg width="13" height="13" viewBox="0 0 24 24" fill="var(--rail)" stroke="var(--rail)" stroke-width="2"><path d="M12 17v5M5 9l7-7 7 7-2 2-5-1-5 1z"></path></svg>{% endif %}
+        <a class="stretch" href="{{ base }}/entry/{{ e.id }}">{{ e.title }}</a>
+      </h3>
+      <button class="pinbtn {{ 'on' if e.pinned }}" title="{{ 'Unpin' if e.pinned else 'Pin' }}"
+              hx-post="{{ base }}/entry/{{ e.id }}/pin" hx-target="#entry-list-region" hx-swap="innerHTML" hx-include="#feed-controls">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ 'currentColor' if e.pinned else 'none' }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M5 9l7-7 7 7-2 2-5-1-5 1z"></path></svg>
+      </button>
+    </div>
+    <p class="desc">{{ e.description or 'No description yet.' }}</p>
+    <div class="entry-meta">
+      <span class="status {{ e.status }}"><span class="dot"></span>{{ 'Solved' if e.status == 'solved' else 'In progress ' ~ e.progress ~ '%' }}</span>
+      {% for tid in e.tag_ids %}{% if tid in tag_map %}{% set t = tag_map[tid] %}
+        <span class="chip" style="color: {{ t.color }}; border-color: {{ t.color }}55; background: {{ t.color }}1a"><span class="dot" style="background: {{ t.color }}"></span>{{ t.name }}</span>
+      {% endif %}{% endfor %}
+      <span class="spacer"></span>
+      {% if e.linked_ids %}<span class="mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>{{ e.linked_ids|length }}</span>{% endif %}
+      {% if e.comments %}<span class="mono"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>{{ e.comments|length }}</span>{% endif %}
+      {% if e.author %}<span class="mono">@{{ e.author }}</span>{% endif %}
+    </div>
+  </div>
+</article>

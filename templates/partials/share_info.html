@@ -1,0 +1,31 @@
+<div class="dialog-head">
+  <h3>Share this board</h3>
+  <button class="icon-btn" data-close-dialog aria-label="Close">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+  </button>
+</div>
+<div class="dialog-body">
+  {% if is_demo %}
+    <p style="margin-top:0;color:var(--muted)">This is a demo board, so its link is temporary and resets when you close the tab. Create a team board to get a permanent share link.</p>
+    <label>Demo link</label>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <input type="text" id="share-url" readonly value="" style="flex:1;font-family:'JetBrains Mono',monospace;font-size:13px">
+      <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('share-url').value, this)">Copy</button>
+    </div>
+  {% else %}
+    <p style="margin-top:0;color:var(--muted)">Anyone with this link can view your board, read only. Paste it into a browser to open it.</p>
+    <label>Share link</label>
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <input type="text" id="share-url" readonly value="" style="flex:1;font-family:'JetBrains Mono',monospace;font-size:13px">
+      <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('share-url').value, this)">Copy</button>
+    </div>
+  {% endif %}
+  <script>
+    (function(){
+      var path = {{ share_path | tojson }};
+      var url = window.location.origin + path;
+      var f = document.getElementById('share-url');
+      if (f) f.value = url;
+    })();
+  </script>
+</div>

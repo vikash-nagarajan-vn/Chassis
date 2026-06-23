@@ -1,0 +1,55 @@
+{% extends "board_base.html" %}
+{% block heading %}New entry{% endblock %}
+{% block content %}
+<div class="wrap" style="max-width:640px">
+  <div class="page-head"><div><div class="eyebrow">New entry</div><h1>Log a new entry</h1><div class="sub">Capture the problem and what you learned while it is fresh.</div></div></div>
+
+  <form method="post" action="{{ base }}/new" class="card" style="padding:20px">
+    <div class="field">
+      <label>Title</label>
+      <input type="text" name="title" placeholder="e.g. Gearbox slipping under load" required autofocus>
+    </div>
+    <div class="field">
+      <label>What happened and what you learned <span class="hint">the useful part for next year</span></label>
+      <textarea name="description" placeholder="Symptoms, root cause, the fix, and anything the next person should know."></textarea>
+    </div>
+    <div class="field">
+      <label>Categories <span class="hint">pick one or more</span></label>
+      <div class="tagrow" style="margin-top:8px">
+        {% for t in board.tags %}
+        <label style="cursor:pointer"><input type="checkbox" name="tag_ids" value="{{ t.id }}" hidden>
+          <span class="chip chip-btn" style="color: {{ t.color }}; border-color: {{ t.color }}55; background: {{ t.color }}1a"><span class="dot" style="background: {{ t.color }}"></span>{{ t.name }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div class="field" style="flex:1;min-width:180px">
+        <label>Status</label>
+        <div class="segmented" style="margin-top:6px">
+          <label><input type="radio" name="status" value="in_progress" checked hidden><span class="seg">In progress</span></label>
+          <label><input type="radio" name="status" value="solved" hidden><span class="seg">Solved</span></label>
+        </div>
+      </div>
+      <div class="field" style="flex:1;min-width:180px">
+        <label>Author</label>
+        <input type="text" name="author" placeholder="your name or handle">
+      </div>
+    </div>
+    <div class="field" style="border:1px solid var(--hairline);border-radius:10px;padding:12px">
+      <label style="display:flex;align-items:center;gap:9px;font-weight:500">
+        <input type="checkbox" name="contact_optin" value="1" style="width:auto;margin:0" onchange="document.getElementById('email-row').style.display = this.checked ? 'block' : 'none'">
+        Let teammates contact me about this entry
+      </label>
+      <div id="email-row" style="display:none;margin-top:10px">
+        <input type="email" name="contact_email" placeholder="email (optional)">
+        <div class="hint" style="margin-top:6px">Only visible to signed-in members of your team.</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px">
+      <a class="btn btn-ghost" href="{{ base }}">Cancel</a>
+      <button type="submit" class="btn btn-primary">Add entry</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

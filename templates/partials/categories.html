@@ -1,0 +1,12 @@
+{% if rows | length == 0 %}
+  <p style="color:var(--muted);margin:0">No tagged entries match this filter yet.</p>
+{% else %}
+  {% for r in rows %}
+  <div class="bar-row">
+    <span class="name" style="color: {{ r.tag.color }}">{{ r.tag.name }}</span>
+    <div class="track">
+      <div class="fill" style="width: {{ [r.pct, 8] | max }}%; background: {{ r.tag.color }}">{{ r.n }} ({{ r.pct }}%)</div>
+    </div>
+  </div>
+  {% endfor %}
+{% endif %}

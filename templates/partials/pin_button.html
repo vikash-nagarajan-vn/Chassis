@@ -1,0 +1,4 @@
+<button id="pin-btn" class="btn btn-outline btn-sm" hx-post="{{ base }}/entry/{{ e.id }}/pin?view=detail" hx-target="#pin-btn" hx-swap="outerHTML">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="{{ 'currentColor' if e.pinned else 'none' }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M5 9l7-7 7 7-2 2-5-1-5 1z"></path></svg>
+  {{ 'Pinned' if e.pinned else 'Pin' }}
+</button>

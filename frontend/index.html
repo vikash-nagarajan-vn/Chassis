@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chassis - Shared Engineering Notebook for Robotics Teams</title>
+  <!-- Favicon embedded as an inline SVG data URI: a minimal wrench glyph. -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a1a1a'/%3E%3Cpath d='M21.5 7.2a5.2 5.2 0 0 0-6.3 6.6L7.4 21.6a2 2 0 0 0 2.9 2.9l7.8-7.8a5.2 5.2 0 0 0 6.6-6.3l-3 3-2.8-.7-.7-2.8z' fill='none' stroke='%23e8650a' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="landing">
+
+  <!-- Top bar: wordmark left, auth actions right. -->
+  <header class="landing-top">
+    <a class="wordmark" href="index.html">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path class="mark-stroke" d="M21.5 7.2a5.2 5.2 0 0 0-6.3 6.6L7.4 21.6a2 2 0 0 0 2.9 2.9l7.8-7.8a5.2 5.2 0 0 0 6.6-6.3l-3 3-2.8-.7-.7-2.8z"
+              fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Chassis
+    </a>
+    <div class="actions">
+      <button class="btn btn-ghost" id="show-signin">Sign In</button>
+      <button class="btn btn-primary" id="show-signup">Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Hero. Shown by default; hidden when an auth form is open. -->
+  <main id="hero-section">
+    <section class="hero">
+      <p class="eyebrow">Engineering notebook + knowledge log</p>
+      <h1>The build log your whole team can <span class="rail-word">actually read</span>.</h1>
+      <p class="lede">
+        Chassis is a shared notebook for competitive robotics teams. Log a fix,
+        a decision, or a dead end, tag it, and the next person who hits the same
+        wall finds your notes in seconds instead of rediscovering them the hard
+        way.
+      </p>
+      <p class="lede">
+        Every entry is searchable, taggable, and linkable. Mark problems Solved,
+        pin the ones that matter, and export the whole thing as a judged-ready
+        notebook PDF. Built for FLL, FTC, FRC, and VEX.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" id="explore-demo">Explore the demo</button>
+        <button class="btn" id="hero-signup">Start a team notebook</button>
+      </div>
+    </section>
+
+    <section class="spec-strip">
+      <div class="spec-cell">
+        <h3>Log it once</h3>
+        <p>
+          Write down the gearbox fix the day you make it. Tag it Drivetrain.
+          Anyone on the team can correct or extend it later.
+        </p>
+      </div>
+      <div class="spec-cell">
+        <h3>Find it fast</h3>
+        <p>
+          Fuzzy search forgives typos. Searching gearbx still surfaces the
+          gearbox entry. Filter by tag and status at the same time.
+        </p>
+      </div>
+      <div class="spec-cell">
+        <h3>Share and submit</h3>
+        <p>
+          Generate a read-only link for another team, or export an Engineering
+          Notebook PDF for judging. One click each.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Auth panel. Hidden until Sign In or Sign Up is pressed. main.js fills and
+       toggles the inner form between the two modes. -->
+  <div class="auth-wrap" id="auth-section" hidden>
+    <div class="auth-card">
+      <h2 id="auth-title">Sign In</h2>
+      <p class="eyebrow" id="auth-subtitle">Access your team board</p>
+
+      <div class="form-error" id="auth-error"></div>
+
+      <!-- Sign up only fields. Hidden in sign-in mode. -->
+      <div class="field signup-only">
+        <label for="f-display">Team display name</label>
+        <input type="text" id="f-display" placeholder="Iron Claws" autocomplete="organization">
+      </div>
+
+      <div class="field">
+        <label for="f-number">Team number</label>
+        <input type="text" id="f-number" placeholder="6328" autocomplete="off">
+      </div>
+
+      <div class="field signup-only">
+        <label for="f-competition">Competition</label>
+        <select id="f-competition">
+          <option value="FLL">FLL</option>
+          <option value="FTC">FTC</option>
+          <option value="FRC" selected>FRC</option>
+          <option value="VEX">VEX</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-password">Team password</label>
+        <input type="password" id="f-password" placeholder="Shared team password" autocomplete="current-password">
+      </div>
+
+      <button class="btn btn-primary" id="auth-submit" style="width:100%">Continue</button>
+
+      <p class="auth-switch">
+        <span id="switch-text">New team?</span>
+        <a href="#" id="switch-mode">Create a notebook</a>
+        <br>
+        <a href="index.html" style="display:inline-block;margin-top:10px">Back to home</a>
+      </p>
+    </div>
+  </div>
+
+  <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle light and dark theme">D</button>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<div class="dialog-head">
+  <h3>{{ date }}</h3>
+  <button class="icon-btn" data-close-dialog aria-label="Close">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+  </button>
+</div>
+<div class="dialog-body">
+  <form hx-post="{{ base }}/calendar/day" hx-target="#cal-grid" hx-swap="outerHTML" data-closes-dialog>
+    <input type="hidden" name="date" value="{{ date }}">
+    <input type="hidden" name="year" value="{{ date[:4] }}">
+    <input type="hidden" name="month" value="{{ date[5:7] | int }}">
+
+    <div class="field">
+      <label>Meeting duration <span class="hint">required</span></label>
+      <select name="duration" required>
+        {% set durs = [['60','1 hour'],['90','1.5 hours'],['120','2 hours'],['150','2.5 hours'],['180','3 hours'],['240','4 hours']] %}
+        <option value="">Select duration</option>
+        {% for val, lab in durs %}<option value="{{ val }}" {{ 'selected' if details.duration == val }}>{{ lab }}</option>{% endfor %}
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Meeting time <span class="hint">required</span></label>
+      <input type="time" name="time" value="{{ details.time or '' }}" required>
+    </div>
+
+    <div class="field">
+      <label>Timezone</label>
+      <select name="timezone">
+        {% set zones = ['America/New_York','America/Chicago','America/Denver','America/Phoenix','America/Los_Angeles','America/Anchorage','Pacific/Honolulu','Europe/London','Europe/Paris','Asia/Tokyo','Australia/Sydney','UTC'] %}
+        {% if details.timezone and details.timezone not in zones %}<option value="{{ details.timezone }}" selected>{{ details.timezone }}</option>{% endif %}
+        {% for z in zones %}<option value="{{ z }}" {{ 'selected' if details.timezone == z }}>{{ z }}</option>{% endfor %}
+      </select>
+      <div class="hint" style="margin-top:6px">Auto-selected from your computer. Change it if your team is elsewhere.</div>
+    </div>
+
+    <div class="field">
+      <label>Location <span class="hint">optional</span></label>
+      <input type="text" name="location" value="{{ details.location or '' }}" placeholder="address or room">
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:space-between;margin-top:6px">
+      {% if selected %}
+      <button type="submit" class="btn btn-danger btn-sm" name="action" value="remove" data-closes-dialog formnovalidate>Remove this day</button>
+      {% else %}<span></span>{% endif %}
+      <button type="submit" class="btn btn-primary" name="action" value="save">Save day</button>
+    </div>
+  </form>
+</div>

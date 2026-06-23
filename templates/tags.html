@@ -1,0 +1,35 @@
+{% extends "board_base.html" %}
+{% block heading %}Tags{% endblock %}
+{% block content %}
+<div class="wrap" style="max-width:620px">
+  <div class="page-head"><div><div class="eyebrow">Categories</div><h1>Tags</h1><div class="sub">Color-code entries by category. Start with the defaults or make your own.</div></div></div>
+
+  <form class="card" style="padding:16px;margin-bottom:20px"
+        hx-post="{{ base }}/tags" hx-target="#tag-list" hx-swap="beforeend"
+        hx-on::after-request="if(event.detail.successful){this.reset();document.getElementById('color-field').value=pickColor()}">
+    <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+      <div style="flex:1;min-width:180px">
+        <label>New tag</label>
+        <input type="text" name="name" placeholder="e.g. Pneumatics" required>
+      </div>
+      <div>
+        <label>Color</label>
+        <input id="color-field" type="color" name="color" value="#4F9DFF" style="width:52px;height:42px;padding:2px;cursor:pointer">
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+
+  <div id="tag-list">
+    {% for t in board.tags %}
+      {% set count = counts.get(t.id, 0) %}
+      {% include "partials/tag_row.html" %}
+    {% endfor %}
+  </div>
+</div>
+<script>
+  // Cycle a fresh suggested color after each add so new tags look distinct.
+  var _palette = ["#4F9DFF","#FFC23D","#43D17A","#C77DFF","#FF5C2B","#22C3C3","#F0617E","#8E7BFF","#7BC043","#5A6472"];
+  function pickColor(){ return _palette[Math.floor(Math.random()*_palette.length)]; }
+</script>
+{% endblock %}

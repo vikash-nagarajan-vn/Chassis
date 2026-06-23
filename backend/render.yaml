@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: chassis-api
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # A single worker keeps in-memory demo boards consistent. Demo boards are
+    # stored in a per-process dict, so multiple workers would split them across
+    # processes and demo requests could land on a worker without the board.
+    # Real teams persist to db.json and are unaffected by worker count.
+    startCommand: gunicorn app:app --workers 1
+    envVars:
+      - key: ALLOWED_ORIGIN
+        value: https://your-github-username.github.io

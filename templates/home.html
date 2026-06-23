@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Chassis | Knowledge log for robotics teams{% endblock %}
+{% block body %}
+<div class="home">
+  <nav class="home-nav">
+    <a class="brand" href="/" style="text-decoration:none;color:inherit;padding:0">
+      <span class="mark">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+      </span>
+      <span class="name">Chassis</span>
+    </a>
+    <div class="actions">
+      {% if logged_in %}
+        <a class="btn btn-outline" href="/board">Open {{ team_name }}</a>
+      {% else %}
+        <a class="btn btn-ghost" href="/signin">Sign in</a>
+        <a class="btn btn-primary" href="/signup">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="rail-accent"></div>
+    <div class="eyebrow">Knowledge log and engineering notebook for robotics teams</div>
+    <h1>Keep your team's knowledge on the frame, not in someone's head.</h1>
+    <p class="lede">
+      Robotics team members usually stay two to four years. When they graduate, the fixes,
+      strategies, and lessons they figured out leave with them, and the next group re-solves the
+      same problems from scratch. Chassis is where your team writes it down once: tagged,
+      searchable, and easy to share with other teams.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary btn-lg" href="/signup">Start a team board</a>
+      <button class="btn btn-outline btn-lg" onclick="openDemo()">Explore the demo</button>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="fico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg></div>
+        <h3>Search that forgives typos</h3>
+        <p>Find any past fix in seconds. A search for "gearbx" still turns up the gearbox entry.</p>
+      </div>
+      <div class="feature">
+        <div class="fico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><circle cx="7" cy="7" r="1.5"></circle></svg></div>
+        <h3>Tag and organize</h3>
+        <p>Color-code entries by category, add multiple tags, and filter by status.</p>
+      </div>
+      <div class="feature">
+        <div class="fico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></div>
+        <h3>Plan the build season</h3>
+        <p>Set your competition date and work days, then watch the countdown on your dashboard.</p>
+      </div>
+      <div class="feature">
+        <div class="fico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg></div>
+        <h3>Export to your notebook</h3>
+        <p>One click turns your log into an Engineering Notebook PDF for competition judging.</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

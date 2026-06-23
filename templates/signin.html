@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Sign in | Chassis{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <a class="back" href="/">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+      Back to home
+    </a>
+    <h2>Open your team board</h2>
+    <p class="sub">Boards are private to your team.</p>
+
+    {% if error %}<div class="error-box" style="margin-bottom:16px">{{ error }}</div>{% endif %}
+
+    <form method="post" action="/signin">
+      <div class="field">
+        <label>Team number</label>
+        <input type="text" name="team_number" value="{{ form.team_number or '' }}" placeholder="e.g. 6328" autofocus required>
+      </div>
+      <div class="field">
+        <label>Team password</label>
+        <input type="password" name="password" placeholder="shared team password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Open board</button>
+    </form>
+
+    <div class="auth-foot">
+      New team? <a href="/signup">Create a board</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
