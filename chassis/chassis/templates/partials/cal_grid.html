@@ -1,0 +1,17 @@
+<div id="cal-grid">
+  <div class="cal-grid">
+    {% for d in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<div class="cal-dow">{{ d }}</div>{% endfor %}
+    {% for week in weeks %}{% for d in week %}
+      {% set dstr = d.strftime('%Y-%m-%d') %}
+      {% set day = board.calendar.work_days.get(dstr) %}
+      {% set is_comp = (board.calendar.competition_date == dstr) %}
+      <button type="button"
+        class="cal-day{{ ' muted' if d.month != cur_month }}{{ ' today' if d == today }}{{ ' available' if day }}{{ ' compdate' if is_comp }}"
+        hx-get="{{ base }}/calendar/day?date={{ dstr }}" hx-target="#day-dialog-body" hx-swap="innerHTML">
+        <span class="num">{{ d.day }}</span>
+        {% if is_comp %}<span class="pin-comp">Compete</span>
+        {% elif day %}<span class="tick">{% if day.time %}{{ day.time }}{% else %}available{% endif %}</span>{% endif %}
+      </button>
+    {% endfor %}{% endfor %}
+  </div>
+</div>

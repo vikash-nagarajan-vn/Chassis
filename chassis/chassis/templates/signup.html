@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Create a board | Chassis{% endblock %}
+{% block body %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <a class="back" href="/">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+      Back to home
+    </a>
+    <h2>Start a team board</h2>
+    <p class="sub">A few details and your board is ready.</p>
+
+    {% if error %}<div class="error-box" style="margin-bottom:16px">{{ error }}</div>{% endif %}
+
+    <form method="post" action="/signup">
+      <div class="field">
+        <label>Team name</label>
+        <input type="text" name="display_name" value="{{ form.display_name or '' }}" placeholder="e.g. Circuit Breakers" autofocus required>
+        <div class="hint">Shown as "Your Name Team [number]", like "Circuit Breakers Team 6328".</div>
+      </div>
+      <div class="field">
+        <label>Team number</label>
+        <input type="text" name="team_number" value="{{ form.team_number or '' }}" placeholder="e.g. 6328" required>
+      </div>
+      <div class="field">
+        <label>Competition</label>
+        <select name="competition">
+          {% for value, label in competitions %}
+          <option value="{{ value }}" {{ 'selected' if form.competition == value }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <div class="hint">FLL, FTC, FRC, and VEX boards are framed as an Engineering Notebook.</div>
+      </div>
+      <div class="field">
+        <label>Team password</label>
+        <input type="password" name="password" placeholder="a password your team will share" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Create board</button>
+    </form>
+
+    <div class="auth-foot">
+      Already have a board? <a href="/signin">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

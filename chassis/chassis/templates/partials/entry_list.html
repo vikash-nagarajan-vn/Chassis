@@ -1,0 +1,27 @@
+{% set pinned = entries | selectattr('pinned') | list %}
+{% set filtering = q or status != 'all' or active_tag %}
+{% if entries | length == 0 %}
+  {% if total == 0 %}
+    <div class="empty">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg></div>
+      <h3>Your board is empty</h3>
+      <p>Start capturing the problems you solve. Future teammates will thank you.</p>
+      <a class="btn btn-primary" href="{{ base }}/new">Log your first entry</a>
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg></div>
+      <h3>No matches</h3>
+      <p>Nothing fits that search or filter. Try fewer words or clear the filters.</p>
+    </div>
+  {% endif %}
+{% else %}
+  {% if not filtering and pinned | length > 0 %}
+    <div class="section-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17v5M5 9l7-7 7 7-2 2-5-1-5 1z"></path></svg> Pinned</div>
+    {% for e in pinned %}{% include "partials/entry_card.html" %}{% endfor %}
+    <div class="section-label">All entries</div>
+    {% for e in entries if not e.pinned %}{% include "partials/entry_card.html" %}{% endfor %}
+  {% else %}
+    {% for e in entries %}{% include "partials/entry_card.html" %}{% endfor %}
+  {% endif %}
+{% endif %}

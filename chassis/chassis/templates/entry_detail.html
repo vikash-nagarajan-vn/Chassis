@@ -1,0 +1,86 @@
+{% extends "board_base.html" %}
+{% block heading %}Entry{% endblock %}
+{% block content %}
+<div class="wrap" style="max-width:680px">
+  <a class="back" href="{{ base }}" style="color:var(--muted);text-decoration:none;font-size:14px;display:inline-flex;gap:6px;align-items:center;margin-bottom:16px">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+    Back to feed
+  </a>
+
+  <div class="eyebrow">{{ competition }} {{ doc }}</div>
+  <h1 style="margin:4px 0 14px;font-size:clamp(22px,3vw,28px)">{{ e.title }}</h1>
+
+  <div class="tagrow" style="margin-bottom:16px">
+    {% for tid in e.tag_ids %}{% if tid in tag_map %}{% set t = tag_map[tid] %}
+      <span class="chip" style="color: {{ t.color }}; border-color: {{ t.color }}55; background: {{ t.color }}1a"><span class="dot" style="background: {{ t.color }}"></span>{{ t.name }}</span>
+    {% endif %}{% endfor %}
+    {% if e.author %}<span class="mono" style="color:var(--muted);font-size:12px;align-self:center">@{{ e.author }}</span>{% endif %}
+  </div>
+
+  {% include "partials/status_control.html" %}
+
+  <div class="action-row">
+    {% include "partials/pin_button.html" %}
+    <a class="btn btn-outline btn-sm" href="{{ base }}/entry/{{ e.id }}/edit">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z"></path></svg>
+      Edit
+    </a>
+    <a class="btn btn-outline btn-sm" href="{{ base }}/export.pdf">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>
+      Export PDF
+    </a>
+    <form method="post" action="{{ base }}/entry/{{ e.id }}/delete" style="margin-left:auto"
+          onsubmit="return confirm('Delete this entry? This cannot be undone.')">
+      <button type="submit" class="btn btn-danger btn-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        Delete
+      </button>
+    </form>
+  </div>
+
+  <div class="detail-block">{{ e.description or 'No description yet.' }}</div>
+
+  {% if e.contact_email %}
+  <div class="contact-strip" style="margin-top:14px">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--rail)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
+    <span style="color:var(--muted)">Follow up with the author:</span>
+    <a href="mailto:{{ e.contact_email }}">{{ e.contact_email }}</a>
+  </div>
+  {% endif %}
+
+  <div class="panel">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>
+      Related entries
+    </h3>
+    {% if others | length == 0 %}
+      <p style="color:var(--muted);margin:0">No other entries to link yet.</p>
+    {% else %}
+    <form method="post" action="{{ base }}/entry/{{ e.id }}/links">
+      <div class="checkbox-list">
+        {% for o in others %}
+        <label><input type="checkbox" name="linked_ids" value="{{ o.id }}" {{ 'checked' if o.id in e.linked_ids }}> {{ o.title }}</label>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-outline btn-sm" style="margin-top:12px">Save links</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <h3>Notes and corrections <span class="mono" style="color:var(--muted);font-size:12px;font-weight:400">({{ e.comments | length }})</span></h3>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 14px">Knowledge gets better over time. Add what changed or what you would do differently.</p>
+    <div id="comments-list">
+      {% for c in e.comments %}{% include "partials/comment.html" %}{% endfor %}
+    </div>
+    <form hx-post="{{ base }}/entry/{{ e.id }}/comment" hx-target="#comments-list" hx-swap="beforeend"
+          hx-on::after-request="if(event.detail.successful){this.reset()}" style="margin-top:12px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="text" name="text" placeholder="Add a note or correction" required style="flex:1;min-width:200px;margin-top:0">
+        <input type="text" name="author" placeholder="you" style="width:110px;margin-top:0">
+        <button type="submit" class="btn btn-primary">Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

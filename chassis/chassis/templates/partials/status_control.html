@@ -1,0 +1,33 @@
+<div id="status-control">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span class="status {{ e.status }}" style="font-size:13px;padding:5px 11px"><span class="dot"></span>{{ 'Solved' if e.status == 'solved' else 'In progress ' ~ e.progress ~ '%' }}</span>
+    {% if e.status == 'solved' %}
+    <button class="btn btn-outline btn-sm" hx-post="{{ base }}/entry/{{ e.id }}/status" hx-vals='{"status":"in_progress"}' hx-target="#status-control" hx-swap="outerHTML">Mark in progress</button>
+    {% else %}
+    <button class="btn btn-primary btn-sm" hx-post="{{ base }}/entry/{{ e.id }}/status" hx-vals='{"status":"solved"}' hx-target="#status-control" hx-swap="outerHTML">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+      Mark solved
+    </button>
+    {% endif %}
+  </div>
+  {% if e.status != 'solved' %}
+  <div style="margin-top:14px;max-width:360px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px">
+      <span>Progress</span><span class="mono" id="pct-label">{{ e.progress }}%</span>
+    </div>
+    <input type="range" min="0" max="100" step="5" name="progress" value="{{ e.progress }}"
+           style="width:100%"
+           oninput="document.getElementById('pct-label').textContent = this.value + '%'"
+           hx-post="{{ base }}/entry/{{ e.id }}/progress" hx-trigger="change" hx-target="#status-control" hx-swap="outerHTML">
+  </div>
+  {% endif %}
+</div>
+{% if show_check %}
+<div id="fx" hx-swap-oob="innerHTML">
+  <div class="checkmark-overlay">
+    <div class="ring">
+      <svg viewBox="0 0 100 100"><path d="M26 52 L44 70 L76 32"></path></svg>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,14 @@
+<div class="tag-row" id="tagrow-{{ t.id }}" style="display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:11px 14px;margin-bottom:9px">
+  <input type="color" value="{{ t.color }}" title="Tag color"
+         style="width:34px;height:34px;padding:0;border:1px solid var(--hairline);border-radius:8px;background:none;cursor:pointer;flex-shrink:0;margin:0"
+         hx-post="{{ base }}/tags/{{ t.id }}" hx-trigger="change" hx-vals="js:{color: event.target.value}" hx-swap="none">
+  <input type="text" value="{{ t.name }}" aria-label="Tag name"
+         style="flex:1;border:none;background:none;font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:15px;margin:0;padding:0"
+         hx-post="{{ base }}/tags/{{ t.id }}" hx-trigger="change" hx-vals="js:{name: event.target.value}" hx-swap="none">
+  <span class="mono" style="font-size:12px;color:var(--muted)">{{ count }} {{ 'entry' if count == 1 else 'entries' }}</span>
+  <button class="icon-btn" title="Delete tag"
+          hx-post="{{ base }}/tags/{{ t.id }}/delete" hx-target="#tagrow-{{ t.id }}" hx-swap="outerHTML"
+          hx-confirm="Delete this tag? Entries using it will lose it.">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+  </button>
+</div>
