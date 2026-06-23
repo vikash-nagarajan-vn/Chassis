@@ -1,0 +1,15 @@
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# app data (the local JSON database)
+data/
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/
+*.tmp

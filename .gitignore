@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# App data: real team records are not committed
+backend/data/db.json
+
+# Environment
+.env
+venv/
+
+# OS and editor cruft
+.DS_Store
+
+# Node (none used, included for safety)
+node_modules/
